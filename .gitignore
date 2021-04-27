@@ -1,0 +1,8 @@
+data/
+.idea/
+logs/
+checkpoints/
+config/
+articles/
+
+lightning_logs/
