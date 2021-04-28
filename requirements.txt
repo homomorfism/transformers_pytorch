@@ -1,0 +1,5 @@
+einops==0.3.0
+Pillow==8.2.0
+pytorch_lightning==1.2.10
+torch==1.8.1
+torchvision==0.9.1
