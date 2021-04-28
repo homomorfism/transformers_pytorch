@@ -7,13 +7,13 @@ from torchvision.datasets import ImageFolder
 
 
 class FRUITSDataloader(pl.LightningDataModule):
-    def __init__(self, path='data/', test_size=0.1, batch_size=4, num_workers=4, shuffle=True):
+    def __init__(self, _path: str, test_size=0.1, batch_size=4, num_workers=4, shuffle=True):
         super(FRUITSDataloader, self).__init__()
 
         self.batch_size = batch_size
         self.num_workers = num_workers
         self.shuffle = shuffle
-        self.training_path = os.path.join(path, "fruits-360/Training")
+        self.training_path = os.path.join(_path, "data/fruits-360/Training")
         assert os.path.isdir(self.training_path)
 
         self.transform = transforms.Compose([
@@ -47,7 +47,3 @@ class FRUITSDataloader(pl.LightningDataModule):
 
     def classes(self):
         return os.listdir(self.training_path)
-
-
-if __name__ == '__main__':
-    FRUITSDataloader()

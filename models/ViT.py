@@ -12,15 +12,15 @@ from models.preprocess import ImageToEmbedding, PositionalEncoding
 class ViT(pl.LightningModule):
 
     def __init__(self,
-                 image_size: int = 28,
-                 patch_size: int = 7,
-                 num_channels=3,
-                 num_classes: int = 10,
-                 d_model: int = 512,
-                 num_blocks: int = 6,
-                 num_heads: int = 4,
-                 mvp_head: int = 2048,
-                 dropout: float = 0.1,
+                 image_size: int,
+                 patch_size: int,
+                 num_channels: int,
+                 num_classes: int,
+                 d_model: int,
+                 num_blocks: int,
+                 num_heads: int,
+                 mvp_head: int,
+                 dropout: float,
                  ):
         """
         Transformer model
@@ -43,8 +43,7 @@ class ViT(pl.LightningModule):
         )
 
         self.class_embedding = nn.Parameter(
-            torch.randn(1, 1, d_model),
-            requires_grad=True,
+            torch.randn(1, 1, d_model)
         )
 
         # n_position = num_patches + 1
@@ -54,7 +53,7 @@ class ViT(pl.LightningModule):
         self.transformer = TransformerModel(
             num_encoders=num_blocks,
             dim=d_model,
-            dim_head=4,
+            dim_head=64,
             mlp_head=mvp_head,
             heads=num_heads,
             dropout=dropout
@@ -64,8 +63,8 @@ class ViT(pl.LightningModule):
 
         self.loss = nn.CrossEntropyLoss()
 
-        self.accuracy = pl.metrics.Accuracy(compute_on_step=False)
-        self.f1 = pl.metrics.F1(num_classes=num_classes, compute_on_step=False)
+        # self.val_accuracy = pl.metrics.Accuracy()
+        self.val_f1 = pl.metrics.F1(num_classes=num_classes)
 
     def forward(self, image):
         batch_size = image.size(0)
@@ -84,8 +83,8 @@ class ViT(pl.LightningModule):
         return output
 
     def configure_optimizers(self):
-        optim = Adam(self.parameters(), lr=0.01)
-        sched = StepLR(optimizer=optim, step_size=100, gamma=0.1, )
+        optim = Adam(self.parameters(), lr=0.0005)
+        sched = StepLR(optimizer=optim, step_size=5, gamma=0.5, )
 
         return [optim, ], [sched, ]
 
@@ -102,6 +101,13 @@ class ViT(pl.LightningModule):
         x, y = batch
         logits = self(x)
         _, pred = torch.max(logits, dim=1)
+        loss = self.loss(logits, y)
 
-        self.accuracy.update(pred, y)
-        self.log('val_acc', self.accuracy)
+        self.log('val_loss', loss)
+        self.log('val_f1', self.val_f1(pred, y))
+
+        return loss
+
+    def validation_epoch_end(self, outputs):
+        mean_loss = sum(outputs) / len(outputs)
+        print(f"Val loss: {mean_loss}, f1: {self.val_f1.compute()}")

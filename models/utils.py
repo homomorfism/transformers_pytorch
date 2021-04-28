@@ -12,7 +12,6 @@ class Attention(nn.Module):
     def __init__(self, dim, heads=8, dim_head=64, dropout=0.):
         super().__init__()
         inner_dim = dim_head * heads
-        project_out = not (heads == 1 and dim_head == dim)
 
         self.heads = heads
         self.scale = dim_head ** -0.5
@@ -23,7 +22,7 @@ class Attention(nn.Module):
         self.to_out = nn.Sequential(
             nn.Linear(inner_dim, dim),
             nn.Dropout(dropout)
-        ) if project_out else nn.Identity()
+        )
 
     def forward(self, x):
         residual = x
@@ -38,13 +37,16 @@ class Attention(nn.Module):
         out = einsum('b h i j, b h j d -> b h i d', attn, v)
         out = rearrange(out, 'b h n d -> b n (h d)')
 
-
         return self.to_out(out) + residual
 
 
 class FeedForwardNetwork(pl.LightningModule):
 
-    def __init__(self, in_features: int, hidden_features: int, out_features: int, dropout):
+    def __init__(self,
+                 in_features: int,
+                 hidden_features: int,
+                 out_features: int,
+                 dropout: float):
         super(FeedForwardNetwork, self).__init__()
         assert in_features == out_features
 

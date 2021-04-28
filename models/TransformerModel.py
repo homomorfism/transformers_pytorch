@@ -1,5 +1,4 @@
 import pytorch_lightning as pl
-import torch
 import torch.nn as nn
 
 from models.utils import FeedForwardNetwork, Attention
@@ -32,9 +31,6 @@ class TransformerModel(pl.LightningModule):
         self.model = nn.Sequential(*encoder)
 
     def forward(self, x):
-
         x = self.model(x)
 
         return x
-
-
