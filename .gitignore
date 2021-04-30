@@ -6,3 +6,4 @@ config/
 articles/
 
 lightning_logs/
+venv/

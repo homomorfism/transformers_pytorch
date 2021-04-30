@@ -21,6 +21,7 @@ class ViT(pl.LightningModule):
                  num_heads: int,
                  mvp_head: int,
                  dropout: float,
+                 displ_attention=False
                  ):
         """
         Transformer model
@@ -56,7 +57,8 @@ class ViT(pl.LightningModule):
             dim_head=64,
             mlp_head=mvp_head,
             heads=num_heads,
-            dropout=dropout
+            dropout=dropout,
+            displ_attention=displ_attention,
         )
 
         self.mvp = nn.Linear(in_features=d_model, out_features=num_classes)

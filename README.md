@@ -16,3 +16,14 @@ Available options:
 - ```--dataset - mnist or fruit```
 - ```--image-path - sample_images/fruits.jpg or sample_images/mnist.jpg```
 - ```--weights-path - weights/fruit.ckpt or weights/mnist.ckpt```
+
+Visualization of attention:
+
+- ```mnist``` (this pic shows more attention probably because I have trained fruits only on 2 epochs)
+
+  ![mnist](attention/attn_mnist.png)
+
+
+- ```fruit```
+  
+  ![fruit](attention/attn_fruit.png)

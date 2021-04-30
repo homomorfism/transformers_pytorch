@@ -14,7 +14,7 @@ class FRUITSDataloader(pl.LightningDataModule):
         self.num_workers = num_workers
         self.shuffle = shuffle
         self.training_path = os.path.join(_path, "data/fruits-360/Training")
-        assert os.path.isdir(self.training_path)
+        assert os.path.isdir(self.training_path), f"{os.path.abspath(self.training_path)} should be folder with images!"
 
         self.transform = transforms.Compose([
             transforms.ToTensor(),

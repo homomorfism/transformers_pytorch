@@ -48,6 +48,7 @@ def main():
             num_heads=8,
             mvp_head=512,
             dropout=0.1,
+            displ_attention=True,
         )
     else:
         model = ViT.load_from_checkpoint(
@@ -61,6 +62,7 @@ def main():
             num_heads=8,
             mvp_head=512,
             dropout=0.1,
+            displ_attention=True,
         )
 
     image = Image.open(args.image_path)

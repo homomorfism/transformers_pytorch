@@ -2,5 +2,9 @@ kaggle==1.5.12
 einops==0.3.0
 Pillow==8.2.0
 pytorch_lightning==1.2.10
-torch==1.8.1
-torchvision==0.9.1
+torch==1.8.0
+torchvision==0.9.0
+
+matplotlib==3.4.0
+seaborn==0.11.1
+argparse==1.4.0
