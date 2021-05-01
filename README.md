@@ -6,6 +6,9 @@ Build docker container:
 - ```docker build -t transformers . ```
 - ```docker run -it --name transformers transformers```
 
+If exited:
+- ```docker start transformers && docker exec -it transformers bash```
+
 Запускать:
 
 - train ```python train_model.py --dataset mnist```
@@ -25,5 +28,5 @@ Visualization of attention:
 
 
 - ```fruit```
-  
+
   ![fruit](attention/attn_fruit.png)

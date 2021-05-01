@@ -21,4 +21,4 @@ RUN chmod 600 /root/.kaggle/kaggle.json
 RUN mkdir data
 RUN cd data/ && kaggle datasets download -d moltean/fruits && unzip -u fruits.zip
 
-CMD /usr/local/bin/shell.sh
+CMD ["bash"]
